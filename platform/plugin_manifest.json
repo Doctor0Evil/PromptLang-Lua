@@ -1,0 +1,50 @@
+{
+  "name": "PromptLang-Lua",
+  "id": "promptlang.lua.ai-art-engine",
+  "version": "1.0.0",
+  "description": "A safety-first AI art and prompt DSL engine with flood-routing of harmful prompts into compliant artwork.",
+  "entrypoint": "platform/chat_interface.lua",
+  "language": "lua",
+  "lua_version": "5.1+",
+  "capabilities": {
+    "commands": [
+      {
+        "name": "image",
+        "trigger": "!image",
+        "styles": ["descriptive", "graph", "handpainting"]
+      }
+    ],
+    "features": [
+      "age_gate",
+      "violence_redirection",
+      "pixel_knowledge_graph",
+      "handpaint_style_transfer",
+      "dsl_escape_sequences"
+    ]
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "logging": {
+        "type": "object",
+        "properties": {
+          "enabled": { "type": "boolean" },
+          "level": { "type": "string" }
+        }
+      },
+      "image_backends": {
+        "type": "object",
+        "properties": {
+          "default": { "type": "string" }
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "external_services": [
+      "stable_diffusion_api_optional",
+      "object_storage_optional"
+    ]
+  },
+  "license": "MIT"
+}
