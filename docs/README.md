@@ -20,3 +20,30 @@ ChatInterface.init(config, {
   send_image = function(channel_id, payload) ... end,
   send_graph = function(channel_id, payload) ... end,
 })
+```
+
+4. On every incoming message:
+
+```lua
+ChatInterface.on_message({
+  platform    = "discord",
+  channel_id  = "<channel>",
+  user_id     = "<user>",
+  text        = "<user text>",
+  claimed_age = 16,
+  metadata    = {},
+})
+```
+
+## Escape-Sequence DSL (Preview)
+
+PromptLang-Lua parses bracketed escape-sequences to control styles:
+
+- Plain prompt:
+  - `Paint a calm forest at dusk`
+- With style directive:
+  - `{style:handpaint} Paint a calm forest at dusk`
+- With pixel-graph hint:
+  - `{graph:true} Map the relationships between the stars in the sky`
+
+See `lib/parser.lua` for the evolving grammar.
