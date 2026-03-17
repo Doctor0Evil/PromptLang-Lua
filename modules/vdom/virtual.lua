@@ -76,3 +76,66 @@ end
 VDOM.VirtualObject = VirtualObject
 
 return VDOM
+-- continuing modules/vdom/virtual.lua
+
+--- Get node id.
+function VirtualObject:id()
+  return self.id
+end
+
+--- Node kind as string, e.g. "Canvas".
+function VirtualObject:kind()
+  return self.kind
+end
+
+--- Check if node has semantic tag.
+function VirtualObject:has_tag(tag)
+  for _, t in ipairs(self.semantic_tags or {}) do
+    if t == tag then return true end
+  end
+  return false
+end
+
+--- Convenience IEI accessor.
+function VirtualObject:iei()
+  return (self.metrics and self.metrics.iei) or 0.0
+end
+
+--- Convenience TIS accessor.
+function VirtualObject:tis()
+  return (self.metrics and self.metrics.tis) or 0.0
+end
+
+--- Generic metric accessor.
+function VirtualObject:metric(name)
+  if not self.metrics then return nil end
+  return self.metrics[name:lower()] or self.metrics[name] -- flexible
+end
+
+--- Event-derived richness.
+function VirtualObject:event_density()
+  local ep = self.event_profile or {}
+  return ep.total_events or 0
+end
+
+--- Get roles (PromptLang roles like "brush").
+function VirtualObject:roles()
+  return (self.annotations and self.annotations.roles) or {}
+end
+
+--- Annotate from Lua side; forwards to VDOM.annotate.
+function VirtualObject:add_role(role)
+  local VDOM = require("modules.vdom.virtual")
+  VDOM.annotate(self.id, { roles = { role } })
+end
+
+--- Children as VirtualObject list (from registry).
+function VirtualObject:children()
+  local VDOM = require("modules.vdom.virtual")
+  local out = {}
+  for _, cid in ipairs(self.children or {}) do
+    local child = VDOM.get(cid)
+    if child then table.insert(out, child) end
+  end
+  return out
+end
