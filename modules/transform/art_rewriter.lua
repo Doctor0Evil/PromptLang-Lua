@@ -30,6 +30,22 @@ function M.to_safe_art(env, signals, parse_result)
   return ast
 end
 
+---Attach high-level style tags for downstream image prompt builders.
+---@param prompt table    -- structured prompt payload
+---@param env PromptLangEnvelope
+---@param artmetrics table
+---@param plan table      -- routing decision, includes style_id
+---@return table prompt
+function M.attach_style_tags(prompt, env, artmetrics, plan)
+  if plan and plan.style_id == "disaster_warden" then
+    -- High-level style tag; the concrete backend prompt builder
+    -- will expand this into chrome-brush / vivid-disaster wording
+    -- as defined in the Disaster Warden style spec.
+    prompt.style = "God’s Image: Disaster Warden"
+  end
+  return prompt
+end
+
 ---@param env PromptLangEnvelope
 ---@param signals table
 ---@param parse_result PromptLangParseResult
